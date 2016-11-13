@@ -15,8 +15,8 @@ module.exports = {
   	count : {           //total no of tweets with the searched string
   		type: 'string'
   	},
-  	personName: {       //person name who has maximum no of tweets
-  		type: 'string'
+  	topPeople: {       //person name who has maximum no of tweets
+  		type: 'object'
   	}
   }
 };

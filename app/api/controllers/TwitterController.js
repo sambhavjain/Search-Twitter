@@ -14,19 +14,41 @@ module.exports = {
 		var search = encodeURI(req.params.query)
 		//console.log(q)
 	
-		T.get('search/tweets', {q:search}, function(err, data){
+		T.get('search/tweets', {q:search, count: 50}, function(err, data){
 			//data = data
 			var noOfTweets = data.statuses.length
 			if(err)
 				console.error(err)
 			
 			// console.log(noOfTweets)
-			Analytics.create({name: req.params.query, count: noOfTweets}).exec(function createCB(err,created){ 
+			 
+			var tweets = data.statuses
+			//console.log(tweets[0].user.name)
+			var user = {},top={},max=0                     //using hashmap storing name of person with their count
+			for(tweet in tweets){
+				//console.log(tweets[tweet].user.name)
+				if(tweets[tweet].user.name in user){
+					//console.log(user[tweets[tweet].user.name])	
+					user[tweets[tweet].user.name].count +=1 ;
+					//console.log('value = '+user[tweets[tweet].user.name].count)
+				} else
+					user[tweets[tweet].user.name] = {count: 1};
+				if(tweet == tweets.length-1){
+					for(x in user){
+						if(max < user[x].count){
+							max = user[x].count	
+							top[x] = {count: max}
+						}
+					}
+					console.log(top)
+				}
+			}
+			Analytics.create({name: req.params.query, count: noOfTweets, topPeople: top}).exec(function createCB(err,created){ 
 				if(err)
 					console.error(err)
 				console.log(created)
 				//return res.json({ notice: 'Created with name ' + created.name }); 
-			}); 
+			});
 			// console.log(data.statuses[0].id_str)
 			//return res.json(data)
 			index_tweets(data,res);
@@ -94,7 +116,7 @@ var index_tweets = function(data,res){
 		      }
 		      else {
 		      	//console.log(bulk)
-		        console.log(resp);
+		        //console.log(resp);
 		      	res.json({state: 'success', message: 'successfully indexed all tweets', tweets: bulk})
 		      }
 		      console.log(status)
