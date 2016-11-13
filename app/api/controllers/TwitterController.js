@@ -14,14 +14,14 @@ module.exports = {
 		var search = encodeURI(req.params.query)
 		//console.log(q)
 	
-		T.get('search/tweets', {q:search, count:5}, function(err, data){
+		T.get('search/tweets', {q:search}, function(err, data){
 			//data = data
 			if(err)
 				console.error(err)
 			//console.log(data)
 			// console.log(data.statuses[0].id_str)
 			//return res.json(data)
-			index_tweets(data);
+			index_tweets(data,res);
 		})
 		
 	},
@@ -43,15 +43,18 @@ module.exports = {
 		    }
 		    else {
 		      console.log(response);
+		      var data = []
 		      response.hits.hits.forEach(function(hit){
 		        console.log(hit);
+		      	data.push(hit)
 		      })
+		      res.json(data)
 		    }
 		});
 	}
 	
 }
-var index_tweets = function(data){
+var index_tweets = function(data,res){
 		var tweets = data.statuses
 		var bulk = []
 		for(var tweet in tweets){
@@ -82,8 +85,9 @@ var index_tweets = function(data){
 		        console.log(err);
 		      }
 		      else {
-		      	console.log(bulk)
+		      	//console.log(bulk)
 		        console.log(resp);
+		      	res.json({state: 'success', message: 'successfully indexed all tweets', tweets: bulk})
 		      }
 		      console.log(status)
 		  })
