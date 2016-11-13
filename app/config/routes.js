@@ -46,6 +46,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   'get /api/search/:query' : 'TwitterController.search',
+  'get /api/searches/:q' : 'TwitterController.searches',
   'get /api/index' : function(req, res){
     res.send('hello world')
   }
