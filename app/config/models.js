@@ -17,8 +17,9 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  connection: 'localDiskDatab',
-  
+  // connection: 'localDiskDatab',
+  connection: 'MongodbServer',
+  // url : 'mongodb://localhost:27017/Search-Twitter'
   /***************************************************************************
   *                                                                          *
   * How and whether Sails will attempt to automatically rebuild the          *

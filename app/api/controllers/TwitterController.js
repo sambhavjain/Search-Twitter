@@ -16,9 +16,17 @@ module.exports = {
 	
 		T.get('search/tweets', {q:search}, function(err, data){
 			//data = data
+			var noOfTweets = data.statuses.length
 			if(err)
 				console.error(err)
-			//console.log(data)
+			
+			// console.log(noOfTweets)
+			Analytics.create({name: req.params.query, count: noOfTweets}).exec(function createCB(err,created){ 
+				if(err)
+					console.error(err)
+				console.log(created)
+				//return res.json({ notice: 'Created with name ' + created.name }); 
+			}); 
 			// console.log(data.statuses[0].id_str)
 			//return res.json(data)
 			index_tweets(data,res);

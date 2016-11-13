@@ -24,6 +24,8 @@
     "rc": "1.0.1",
     "sails": "~0.12.9",
     "sails-disk": "~0.10.9",
+    "sails-mongo": "0.12.1",
+    "sails-mongoose": "0.0.3",
     "twit": "2.2.5"
   },
   "scripts": {

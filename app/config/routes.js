@@ -45,8 +45,9 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'get /api/search/:query' : 'TwitterController.search',
-  'get /api/searches/:q' : 'TwitterController.searches',
+  'get /api/search/:query' : 'TwitterController.search',     // indexing tweets to elastic search and returning he result obtained from twiter search api
+  'get /api/searches/:q' : 'TwitterController.searches',     //quering from elasic search database
+  'get /api/noOfTweets/:key' : 
   'get /api/index' : function(req, res){
     res.send('hello world')
   }
