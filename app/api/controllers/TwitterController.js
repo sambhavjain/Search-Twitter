@@ -24,7 +24,7 @@ module.exports = {
 			 
 			var tweets = data.statuses
 			//console.log(tweets[0].user.name)
-			var user = {},top={},max=0                     //using hashmap storing name of person with their count
+			var user = {},top={},max=0,tuples = []                     //using hashmap storing name of person with their count
 			for(tweet in tweets){
 				//console.log(tweets[tweet].user.name)
 				if(tweets[tweet].user.name in user){
@@ -35,15 +35,21 @@ module.exports = {
 					user[tweets[tweet].user.name] = {count: 1};
 				if(tweet == tweets.length-1){
 					for(x in user){
-						if(max < user[x].count){
-							max = user[x].count	
-							top[x] = {count: max}
-						}
+						tuples.push([x, user[x]])
 					}
-					console.log(top)
+					// tuples = JSON.parse(tuples);
+					var top10 = tuples.sort(function(a, b) { return a[1].count > b[1].count ? -1 : 1; }).slice(0, 10);
+					
+					// for(x in user){
+					// 	if(max < user[x].count){
+					// 		max = user[x].count	
+					// 		top[x] = {count: max}
+					// 	}
+					// }
+					// console.log(top10)
 				}
 			}
-			Analytics.create({name: req.params.query, count: noOfTweets, topPeople: top}).exec(function createCB(err,created){ 
+			Analytics.create({name: req.params.query, count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
 				if(err)
 					console.error(err)
 				console.log(created)

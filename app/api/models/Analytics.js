@@ -16,7 +16,7 @@ module.exports = {
   		type: 'string'
   	},
   	topPeople: {       //person name who has maximum no of tweets
-  		type: 'object'
+  		type: 'array'
   	}
   }
 };
