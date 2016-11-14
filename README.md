@@ -8,6 +8,10 @@ Functionality :
 a. Number of Tweets 
 b. People who tweeted the most (Top 10)
 
+Storage : 
+1. All tweets-specific data returned are first be stored in an Elastic Search data store, within the cluster and then can be queried again to retrieve them.
+2. All the basic analytics are stored in a MongoDB collection before being retrieved.
+
 Routes are in app/config/routes.js
 
 'get /api/search/:query'   : 'TwitterController.searchAndIndex',     // indexing tweets to elastic search and returning he result obtained from twiter search api
