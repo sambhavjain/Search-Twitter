@@ -24,7 +24,8 @@ module.exports = {
 			 
 			var tweets = data.statuses
 			//console.log(tweets[0].user.name)
-			var user = {},top={},max=0,tuples = []                     //using hashmap storing name of person with their count
+			var tuples = []
+			var user = {}                                            //using hashmap storing name of person with their count
 			for(tweet in tweets){
 				//console.log(tweets[tweet].user.name)
 				if(tweets[tweet].user.name in user){
@@ -49,16 +50,38 @@ module.exports = {
 					// console.log(top10)
 				}
 			}
-			Analytics.create({name: req.params.query, count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
-				if(err)
-					console.error(err)
-				console.log(created)
-				//return res.json({ notice: 'Created with name ' + created.name }); 
+			Analytics.findOne({name:req.params.key}).exec(function (err, tweetsNamedKey){
+			  if (err) {
+			   	console.error(err)
+			    // return res.serverError(err);
+			  }
+				if(tweetsNamedKey){
+					Analytics.update({name: req.params.query},{count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
+						if(err)
+							console.error(err)
+						console.log(created)
+						//return res.json({ notice: 'Created with name ' + created.name }); 
+					});		
+				} else {
+					Analytics.create({name: req.params.query, count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
+						if(err)
+							console.error(err)
+						console.log(created)
+						//return res.json({ notice: 'Created with name ' + created.name }); 
+					});
+				}
 			});
+			
 			// console.log(data.statuses[0].id_str)
 			//return res.json(data)
 			index_tweets(data,res);
 		})
+
+		// findTweets()
+		// .then(index_tweets(data, res))
+		// .then(findTop10())
+		// .then(updateAnalytics())
+
 		
 	},
 	searches : function(req, res){
