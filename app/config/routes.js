@@ -46,9 +46,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   'get /api/search/:query'   : 'TwitterController.searchAndIndex',     // indexing tweets to elastic search and returning he result obtained from twiter search api
-  'get /api/searches/:q'     : 'TwitterController.searches',     //quering from elasic search database
-  'get /api/tweetCount/:key' : 'AnalyticsController.getNoOfTweets',
-  'get /api/topPeople/:key'  : 'AnalyticsController.topPeople',
+  'get /api/searches/:q'     : 'TwitterController.searches',          //quering from elasic search database
+  'get /api/tweetCount/:key' : 'AnalyticsController.getNoOfTweets',   //return no of tweets for the given keyword
+  'get /api/topPeople/:key'  : 'AnalyticsController.topPeople',       //return top10 people who tweeted for the given keyword
   'get /api/index'           : function(req, res){
     res.send('hello world')
   }

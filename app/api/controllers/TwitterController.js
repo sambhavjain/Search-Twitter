@@ -1,6 +1,5 @@
 var client = require('../../elasticSearch.js')
 var twitter = require('twit')
-// var map = require('hashmap')
 var config = require('./config.js')
 var secret = {
   consumer_key: config.consumer_key,
@@ -89,8 +88,8 @@ module.exports = {
 		  index: 'tweets',
 		  type: 'tweet',
 		  body: {
-		    query: {
-		      match: { "text": encodeURI(q) }
+		    query: {                                 //search all docs with given keyword from elastic search db
+		      match: { "text": encodeURI(q) }               
 		    },
 		  }
 		},function (error, response,status) {
@@ -113,7 +112,7 @@ module.exports = {
 var index_tweets = function(data,res){
 		var tweets = data.statuses
 		var bulk = []
-		for(var tweet in tweets){
+		for(var tweet in tweets){                         //Making bulk array for indexing
 
 			bulk.push({index: {_index: 'tweets', _type: 'tweet', _id: tweets[tweet].id_str }})
 			bulk.push(tweets[tweet])
@@ -131,7 +130,7 @@ var index_tweets = function(data,res){
 		// 	// callback(aTweet);
 		//  //    }
 		//  });
-		client.bulk({
+		client.bulk({                             //Indexing all tweets and storing in ES db
 		    maxRetries: 5,
 		    index: 'tweets',
 		    type: 'tweet',
