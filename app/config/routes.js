@@ -45,7 +45,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'get /api/search/:query'   : 'TwitterController.search',     // indexing tweets to elastic search and returning he result obtained from twiter search api
+  'get /api/search/:query'   : 'TwitterController.searchAndIndex',     // indexing tweets to elastic search and returning he result obtained from twiter search api
   'get /api/searches/:q'     : 'TwitterController.searches',     //quering from elasic search database
   'get /api/tweetCount/:key' : 'AnalyticsController.getNoOfTweets',
   'get /api/topPeople/:key'  : 'AnalyticsController.topPeople',

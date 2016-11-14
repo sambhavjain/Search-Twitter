@@ -1,15 +1,16 @@
 var client = require('../../elasticSearch.js')
 var twitter = require('twit')
 // var map = require('hashmap')
-var config = {
-  consumer_key: 'e2cTI9aM8LPzFOW5iaiCDSPyp',
-  consumer_secret: 'EliSDbE4j6RI4auyJEKeTnPv58NIFnhMlR7IdlJxvuhJd7SnJS',
-  access_token: '2464889670-rzHFqKFo8SyUVtcF1RG6Rbe6ydFnvjlLAzyqyVm',
-  access_token_secret: 'eiexqg6VzGV6eYK5IkXcqjMSsz1dBjuVLAWiv1GLI7cE6'
+var config = require('./config.js')
+var secret = {
+  consumer_key: config.consumer_key,
+  consumer_secret: config.consumer_secret,
+  access_token: config.access_token,
+  access_token_secret: config.access_token_secret
 }
-var T = new twitter(config);
+var T = new twitter(secret);
 module.exports = {
-	search :function(req, res){
+	searchAndIndex :function(req, res){
 		// var options = { count: 100};
 		var search = encodeURI(req.params.query)
 		//console.log(q)
@@ -50,13 +51,13 @@ module.exports = {
 					// console.log(top10)
 				}
 			}
-			Analytics.findOne({name:req.params.key}).exec(function (err, tweetsNamedKey){
+			Analytics.findOne({name:req.params.query}).exec(function (err, done){
 			  if (err) {
 			   	console.error(err)
 			    // return res.serverError(err);
 			  }
-				if(tweetsNamedKey){
-					Analytics.update({name: req.params.query},{count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
+			    else if(done != null){
+			    	Analytics.update({name: req.params.query},{count: noOfTweets, topPeople: top10}).exec(function createCB(err,created){ 
 						if(err)
 							console.error(err)
 						console.log(created)
@@ -77,10 +78,6 @@ module.exports = {
 			index_tweets(data,res);
 		})
 
-		// findTweets()
-		// .then(index_tweets(data, res))
-		// .then(findTop10())
-		// .then(updateAnalytics())
 
 		
 	},
